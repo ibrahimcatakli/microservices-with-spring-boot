@@ -1,0 +1,27 @@
+server:
+  port: 8081
+
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id : account-service
+          #uri: http://localhost:8045
+          uri: lb://ACCOUNT-SERVICE
+          predicates:
+            - Path=/account/**
+        - id: credit-service
+          #uri: http://localhost:8050
+          uri: lb://CREDIT-SERVICE
+          predicates:
+            - Path=/credit/**
+
+eureka:
+  instance:
+    appname: ${spring.application.name}
+  client:
+    service-url:
+      defaultZone: http://localhost:8010/eureka
